@@ -354,6 +354,8 @@ class MarkDecorator:
         if args and not kwargs:
             func = args[0]
             is_class = inspect.isclass(func)
+            if getattr(func, "_pytestfixturefunction", None):
+                return self.with_args(func.__name__)
             if len(args) == 1 and (istestfunc(func) or is_class):
                 store_mark(func, self.mark, stacklevel=3)
                 return func
